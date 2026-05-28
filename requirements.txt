@@ -1,0 +1,6 @@
+torch>=2.8,<2.9
+torchaudio>=2.8,<2.9
+numpy
+json5
+huggingface_hub
+soundfile

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "holitok"
+version = "0.1.0"
+description = "Inference runtime for HoliTok latent extraction, reconstruction, and semantic feature extraction."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = [
+    "torch>=2.8,<2.9",
+    "torchaudio>=2.8,<2.9",
+    "numpy",
+    "json5",
+    "huggingface_hub",
+    "soundfile",
+]
+
+[project.scripts]
+holitok = "holitok.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["holitok*"]
