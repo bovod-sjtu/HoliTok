@@ -1,9 +1,11 @@
 # HoliTok
 
+[![Paper](https://shields.io/badge/arxiv-paper-red?logo=arxiv)](https://arxiv.org/abs/2605.29948)
+[![Checkpoints](https://img.shields.io/badge/checkpoints-Hugging%20Face-yellow.svg?logo=huggingface)](https://huggingface.co/bovod-sjtu/HoliTok)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.10-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/pytorch-%3E%3D2.8%2C%3C2.9-ee4c2c.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
-[![Checkpoints](https://img.shields.io/badge/checkpoints-Hugging%20Face-yellow.svg)](https://huggingface.co/bovod-sjtu/HoliTok)
+
 
 HoliTok is a compact inference runtime for 48 kHz VAE audio tokenization,
 reconstruction, and semantic feature extraction.
@@ -177,3 +179,16 @@ dictionary with:
 - `holitok/cli.py`: encode, semantic feature, decode, and reconstruct commands.
 - `scripts/`: shell wrappers for latent extraction, semantic feature extraction,
   and reconstruction.
+
+## Citation
+```
+@misc{li2026holitokacoutinuousholistictokenization,
+      title={HoliTok:A Coutinuous Holistic Tokenization with Robust Dual Capabilities of Speech Generation and Understanding}, 
+      author={Bohan Li and Shi Lian and Hankun Wang and Yiwei Guo and Yu Xi and Zhihan Li and Da Zheng and Colin Zhang and Kai Yu},
+      year={2026},
+      eprint={2605.29948},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD},
+      url={https://arxiv.org/abs/2605.29948}, 
+}
+```
