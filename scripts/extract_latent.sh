@@ -10,8 +10,10 @@ BASIC_CONFIG="${BASIC_CONFIG:-}"
 CHECKPOINT="${CHECKPOINT:-}"
 CHECKPOINT_SOURCE="${CHECKPOINT_SOURCE:-${REPO_ID:-}}"
 CACHE_DIR="${CACHE_DIR:-}"
-MODE="${MODE:-posterior}"
+MODE="${MODE:-sample}"
+NOISE_SCALE="${NOISE_SCALE:-1.0}"
 DEVICE="${DEVICE:-}"
+SEED="${SEED:-}"
 LOCAL_FILES_ONLY="${LOCAL_FILES_ONLY:-}"
 PYTHON="${PYTHON:-python}"
 
@@ -21,6 +23,7 @@ args=(
   --input "$INPUT"
   --output "$OUTPUT"
   --mode "$MODE"
+  --noise-scale "$NOISE_SCALE"
 )
 
 if [[ -n "$CONFIG" ]]; then
@@ -45,6 +48,10 @@ fi
 
 if [[ -n "$DEVICE" ]]; then
   args+=(--device "$DEVICE")
+fi
+
+if [[ -n "$SEED" ]]; then
+  args+=(--seed "$SEED")
 fi
 
 if [[ "$LOCAL_FILES_ONLY" == "1" || "$LOCAL_FILES_ONLY" == "true" ]]; then

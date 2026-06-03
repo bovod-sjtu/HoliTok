@@ -45,7 +45,7 @@ audio = torch.randn(1, 1, 48000, device="cuda:0")
 posterior = model.encode_posterior(audio)
 
 # [B, latent_dim, T]
-latents = model.posterior_mean(posterior)
+latents = model.sample_posterior(posterior)
 
 # [B, 1, samples]
 recon = model.decode(latents)
@@ -65,13 +65,13 @@ holitok encode \
   --model HoliTok-Unite \
   --input input.wav \
   --output latents.pt \
-  --mode posterior
+  --mode sample
 
 holitok semantic \
   --model HoliTok-Unite \
   --input-latents latents.pt \
   --output semantic_features.pt \
-  --posterior-mode mean
+  --posterior-mode sample
 
 holitok reconstruct \
   --model HoliTok-Unite \
@@ -95,7 +95,7 @@ Extract VAE latents from audio:
 MODEL=HoliTok-Unite \
 INPUT=input.wav \
 OUTPUT=latents.pt \
-MODE=posterior \
+MODE=sample \
 scripts/extract_latent.sh
 ```
 
@@ -105,7 +105,7 @@ Extract semantic features from a latent file:
 MODEL=HoliTok-Unite \
 LATENTS=latents.pt \
 OUTPUT=semantic_features.pt \
-POSTERIOR_MODE=mean \
+POSTERIOR_MODE=sample \
 scripts/extract_semantic_feature.sh
 ```
 
@@ -115,7 +115,7 @@ Extract semantic features directly from audio:
 MODEL=HoliTok-Unite \
 INPUT=input.wav \
 OUTPUT=semantic_features.pt \
-MODE=mean \
+MODE=sample \
 scripts/extract_semantic_feature.sh
 ```
 
@@ -137,6 +137,8 @@ Common optional variables for the wrappers:
 - `SEMANTIC_CHECKPOINT=/path/to/semantic.pt`
 - `CHECKPOINT_SOURCE=https://...`
 - `CACHE_DIR=/path/to/cache`
+- `NOISE_SCALE=1.0`
+- `SEED=1234`
 - `LOCAL_FILES_ONLY=1`
 
 ## Checkpoint Source
@@ -154,7 +156,8 @@ Local checkpoints are supported with `checkpoint="path/to/model.pt"` in Python,
 
 ## Outputs
 
-`holitok encode` and `scripts/extract_latent.sh` save a `.pt` dictionary with:
+`holitok encode` and `scripts/extract_latent.sh` default to posterior sampling
+and save a `.pt` dictionary with:
 
 - `latents`: posterior, mean, or sampled latents depending on `MODE`
 - `mode`: `posterior`, `mean`, or `sample`

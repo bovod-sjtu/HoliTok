@@ -45,6 +45,8 @@ def _load_model(args) -> HoliTok:
 def encode_cmd(args) -> None:
     vae = _load_model(args)
     audio, _ = load_audio(args.input, vae.sample_rate)
+    if args.seed is not None:
+        torch.manual_seed(args.seed)
     if args.mode == "posterior":
         latents = vae.encode_posterior(audio)
     else:
@@ -66,7 +68,7 @@ def decode_cmd(args) -> None:
     payload = torch.load(args.input, map_location="cpu", weights_only=False)
     latents = payload["latents"] if isinstance(payload, dict) and "latents" in payload else payload
     mode = payload.get("mode", args.mode) if isinstance(payload, dict) else args.mode
-    if mode == "posterior" and not args.posterior_do_sample:
+    if mode == "posterior" and args.posterior_use_mean:
         latents = HoliTok.posterior_mean(latents)
         do_sample = False
     else:
@@ -168,8 +170,9 @@ def build_parser() -> argparse.ArgumentParser:
     _add_model_args(encode)
     encode.add_argument("--input", required=True)
     encode.add_argument("--output", required=True)
-    encode.add_argument("--mode", choices=["posterior", "mean", "sample"], default="posterior")
+    encode.add_argument("--mode", choices=["posterior", "mean", "sample"], default="sample")
     encode.add_argument("--noise-scale", type=float, default=1.0)
+    encode.add_argument("--seed", type=int, default=None)
     encode.set_defaults(func=encode_cmd)
 
     decode = subparsers.add_parser("decode")
@@ -177,7 +180,8 @@ def build_parser() -> argparse.ArgumentParser:
     decode.add_argument("--input", required=True)
     decode.add_argument("--output", required=True)
     decode.add_argument("--mode", choices=["posterior", "mean", "sample"], default="mean")
-    decode.add_argument("--posterior-do-sample", action="store_true")
+    decode.add_argument("--posterior-do-sample", action="store_true", help=argparse.SUPPRESS)
+    decode.add_argument("--posterior-use-mean", action="store_true")
     decode.add_argument("--noise-scale", type=float, default=1.0)
     decode.set_defaults(func=decode_cmd)
 
@@ -196,8 +200,8 @@ def build_parser() -> argparse.ArgumentParser:
     semantic.add_argument("--input-latents", default=None)
     semantic.add_argument("--output", required=True)
     semantic.add_argument("--semantic-checkpoint", default=None, help="Optional local semantic.pt path")
-    semantic.add_argument("--mode", choices=["mean", "sample"], default="mean")
-    semantic.add_argument("--posterior-mode", choices=["mean", "sample"], default="mean")
+    semantic.add_argument("--mode", choices=["mean", "sample"], default="sample")
+    semantic.add_argument("--posterior-mode", choices=["mean", "sample"], default="sample")
     semantic.add_argument("--channel-last", action="store_true", help="Input latents are [B,T,D]")
     semantic.add_argument("--noise-scale", type=float, default=1.0)
     semantic.add_argument("--seed", type=int, default=None)

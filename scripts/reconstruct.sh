@@ -11,6 +11,7 @@ CHECKPOINT="${CHECKPOINT:-}"
 CHECKPOINT_SOURCE="${CHECKPOINT_SOURCE:-${REPO_ID:-}}"
 CACHE_DIR="${CACHE_DIR:-}"
 MODE="${MODE:-sample}"
+NOISE_SCALE="${NOISE_SCALE:-1.0}"
 DEVICE="${DEVICE:-}"
 SEED="${SEED:-}"
 LOCAL_FILES_ONLY="${LOCAL_FILES_ONLY:-}"
@@ -22,6 +23,7 @@ args=(
   --input "$INPUT"
   --output "$OUTPUT"
   --mode "$MODE"
+  --noise-scale "$NOISE_SCALE"
 )
 
 if [[ -n "$CONFIG" ]]; then
