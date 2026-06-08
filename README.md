@@ -1,14 +1,3 @@
----
-license: apache-2.0
-library_name: pytorch
-tags:
-- audio
-- speech
-- audio-tokenization
-- vae
-- pytorch
----
-
 # HoliTok
 
 [![Paper](https://shields.io/badge/arxiv-paper-red?logo=arxiv)](https://arxiv.org/abs/2605.29948)
